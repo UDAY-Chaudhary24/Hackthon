@@ -1,0 +1,7 @@
+n = int(input("number: "))
+l = [2, 5, 8, 3, 10]
+
+for i in range(len(l)):
+    l[i] = l[i] * n
+
+print(l)

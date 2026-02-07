@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEX - AI Traffic Signal Optimiser</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="emergency-alert" id="emergencyAlert">
+        🚨 EMERGENCY VEHICLE DETECTED - Priority Mode Active
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">APEX</div>
+            <div class="tagline">AI Traffic Signal Optimiser</div>
+        </header>
+
+        <div class="dashboard">
+            <!-- Main Traffic Control -->
+            <div>
+                <div class="card">
+                    <div class="card-title">🎥 Live Traffic Cameras</div>
+                    <div class="camera-grid">
+                        <div class="camera-feed">
+                            <div class="camera-label">North Lane</div>
+                            <canvas id="camera1"></canvas>
+                            <div class="vehicle-count" id="count1">0 vehicles</div>
+                        </div>
+                        <div class="camera-feed">
+                            <div class="camera-label">South Lane</div>
+                            <canvas id="camera2"></canvas>
+                            <div class="vehicle-count" id="count2">0 vehicles</div>
+                        </div>
+                        <div class="camera-feed">
+                            <div class="camera-label">East Lane</div>
+                            <canvas id="camera3"></canvas>
+                            <div class="vehicle-count" id="count3">0 vehicles</div>
+                        </div>
+                        <div class="camera-feed">
+                            <div class="camera-label">West Lane</div>
+                            <canvas id="camera4"></canvas>
+                            <div class="vehicle-count" id="count4">0 vehicles</div>
+                        </div>
+                    </div>
+                    
+                    <div class="vehicle-breakdown">
+                        <div class="vehicle-type">
+                            <div class="vehicle-type-icon">🚗</div>
+                            <div class="vehicle-type-count" id="carCount">0</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Cars</div>
+                        </div>
+                        <div class="vehicle-type">
+                            <div class="vehicle-type-icon">🚌</div>
+                            <div class="vehicle-type-count" id="busCount">0</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Buses</div>
+                        </div>
+                        <div class="vehicle-type">
+                            <div class="vehicle-type-icon">🏍️</div>
+                            <div class="vehicle-type-count" id="bikeCount">0</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Bikes</div>
+                        </div>
+                        <div class="vehicle-type">
+                            <div class="vehicle-type-icon">🚛</div>
+                            <div class="vehicle-type-count" id="truckCount">0</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Trucks</div>
+                        </div>
+                        <div class="vehicle-type">
+                            <div class="vehicle-type-icon">🚑</div>
+                            <div class="vehicle-type-count" id="emergencyCount">0</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Emergency</div>
+                        </div>
+                        <div class="vehicle-type">
+                            <div class="vehicle-type-icon">🚶</div>
+                            <div class="vehicle-type-count" id="pedestrianCount">0</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Pedestrians</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-title">🚦 Traffic Signal Status</div>
+                    <div class="signal-container">
+                        <div>
+                            <div class="signal-light" id="signal1">●</div>
+                            <div class="signal-info">
+                                <div>North-South</div>
+                                <div class="signal-timer" id="timer1">30s</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="signal-light" id="signal2">●</div>
+                            <div class="signal-info">
+                                <div>East-West</div>
+                                <div class="signal-timer" id="timer2">30s</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-title">🔥 Traffic Heatmap</div>
+                    <div class="heatmap-container">
+                        <canvas id="heatmapCanvas" class="heatmap-canvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-title">📈 Performance Analytics</div>
+                    <div class="chart-container">
+                        <canvas id="performanceChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Panel -->
+            <div>
+                <div class="card">
+                    <div class="card-title">⚙️ Control Mode</div>
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" onclick="setMode('ai')" id="aiModeBtn">AI Mode</button>
+                        <button class="mode-btn" onclick="setMode('manual')" id="manualModeBtn">Manual</button>
+                    </div>
+                    
+                    <div class="weather-widget">
+                        <div class="weather-icon" id="weatherIcon">☀️</div>
+                        <div class="weather-info">
+                            <div class="weather-temp" id="weatherTemp">28°C</div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;" id="weatherCondition">Clear Sky</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-status">
+                        <div class="status-indicator">
+                            <div class="status-dot"></div>
+                            <div class="status-text">AI Model: Active</div>
+                        </div>
+                        <div style="font-size: 0.9rem; opacity: 0.8; margin-left: 1.8rem;">
+                            Real-time traffic analysis in progress
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Traffic Flow Speed</span>
+                            <span id="speedValue">1x</span>
+                        </div>
+                        <input type="range" min="1" max="5" value="1" class="slider" id="speedSlider">
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalVehicles">0</div>
+                            <div class="stat-label">Total Vehicles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="avgWait">0s</div>
+                            <div class="stat-label">Avg Wait Time</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="efficiency">0%</div>
+                            <div class="stat-label">Efficiency</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="emissions">0kg</div>
+                            <div class="stat-label">CO₂ Saved</div>
+                        </div>
+                    </div>
+                    
+                    <div class="control-panel">
+                        <button class="btn btn-primary" onclick="startSimulation()">Start AI</button>
+                        <button class="btn btn-danger" onclick="stopSimulation()">Stop</button>
+                    </div>
+                    
+                    <div class="control-panel">
+                        <button class="btn btn-primary" onclick="triggerEmergency()" style="background: var(--danger);">🚑 Emergency</button>
+                        <button class="btn btn-primary" onclick="addTraffic()">➕ Traffic</button>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-title">🔮 AI Predictions</div>
+                    <div class="prediction-card">
+                        <div class="prediction-title">Next 15 Minutes</div>
+                        <div class="prediction-item">
+                            <span>Peak Time Forecast</span>
+                            <span id="peakForecast">Low</span>
+                        </div>
+                        <div class="prediction-item">
+                            <span>Congestion Risk</span>
+                            <span id="congestionRisk">15%</span>
+                        </div>
+                        <div class="prediction-item">
+                            <span>Optimal Route</span>
+                            <span id="optimalRoute">East-West</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-title">📊 Activity Log</div>
+                    <div class="log-panel" id="logPanel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

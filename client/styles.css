@@ -1,0 +1,606 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+:root {
+    --primary: #00ff9d;
+    --secondary: #00d4ff;
+    --danger: #ff006e;
+    --warning: #ffbe0b;
+    --dark: #0a0e27;
+    --dark-light: #1a1f3a;
+    --text: #e0e6ff;
+    --grid-color: rgba(0, 255, 157, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Animated grid background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { filter: drop-shadow(0 0 10px var(--primary)); }
+    to { filter: drop-shadow(0 0 20px var(--secondary)); }
+}
+
+.tagline {
+    font-size: 1.2rem;
+    color: var(--secondary);
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+/* Dashboard Grid */
+.dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Cards */
+.card {
+    background: var(--dark-light);
+    border: 1px solid rgba(0, 255, 157, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.6s ease-out backwards;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+
+.card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Traffic Camera Feed */
+.camera-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.camera-feed {
+    position: relative;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    border: 2px solid var(--dark);
+}
+
+.camera-feed canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.camera-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--primary);
+    z-index: 2;
+}
+
+.vehicle-count {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 212, 255, 0.9);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #000;
+    z-index: 2;
+}
+
+/* Traffic Signal Visualizer */
+.signal-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.signal-light {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 900;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.signal-light.active-green {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+    box-shadow: 0 0 50px var(--primary);
+    animation: pulse 1s ease-in-out infinite;
+}
+
+.signal-light.active-red {
+    background: var(--danger);
+    color: #fff;
+    border-color: var(--danger);
+    box-shadow: 0 0 50px var(--danger);
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.signal-info {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.signal-timer {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.stat-card {
+    background: rgba(0, 255, 157, 0.05);
+    border: 1px solid rgba(0, 255, 157, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.8;
+}
+
+/* AI Status */
+.ai-status {
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid var(--secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.status-text {
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+/* Control Panel */
+.control-panel {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn {
+    flex: 1;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #000;
+}
+
+.btn-primary:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 255, 157, 0.4);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #ff3385;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255, 0, 110, 0.4);
+}
+
+/* Log Panel */
+.log-panel {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+}
+
+.log-entry {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    animation: logSlide 0.3s ease-out;
+}
+
+@keyframes logSlide {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.log-time {
+    color: var(--secondary);
+    margin-right: 0.5rem;
+}
+
+/* Emergency Alert */
+.emergency-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--danger);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    box-shadow: 0 5px 30px rgba(255, 0, 110, 0.6);
+    animation: emergencyPulse 0.5s ease-in-out infinite alternate;
+    z-index: 1000;
+    display: none;
+}
+
+.emergency-alert.active {
+    display: block;
+}
+
+@keyframes emergencyPulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+/* Mode Toggle */
+.mode-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 0.6rem;
+    border: 2px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    border-radius: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mode-btn.active {
+    background: var(--primary);
+    color: #000;
+}
+
+/* Traffic Heatmap */
+.heatmap-container {
+    position: relative;
+    height: 300px;
+    margin: 1rem 0;
+}
+
+.heatmap-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+/* Weather Widget */
+.weather-widget {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid var(--secondary);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.weather-icon {
+    font-size: 2.5rem;
+}
+
+.weather-info {
+    flex: 1;
+}
+
+.weather-temp {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+/* Prediction Panel */
+.prediction-card {
+    background: rgba(255, 190, 11, 0.1);
+    border: 1px solid var(--warning);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.prediction-title {
+    font-weight: 700;
+    color: var(--warning);
+    margin-bottom: 0.5rem;
+}
+
+.prediction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 190, 11, 0.2);
+}
+
+/* Vehicle Type Breakdown */
+.vehicle-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.vehicle-type {
+    text-align: center;
+    padding: 0.5rem;
+    background: rgba(0, 255, 157, 0.05);
+    border-radius: 6px;
+}
+
+.vehicle-type-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.vehicle-type-count {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Range Slider */
+.slider-container {
+    margin: 1rem 0;
+}
+
+.slider-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+
+    .slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(0, 255, 157, 0.2);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none; /* Keep for older Safari support */
+}
+
+
+
+    .slider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--primary);
+
+    }
+.slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--primary);
+    border: none;
+}
+
+/* Performance Chart */
+.chart-container {
+    height: 150px;
+    margin: 1rem 0;
+    position: relative;
+}
+
+.chart-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .camera-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .logo {
+        font-size: 2rem;
+    }
+    
+    .vehicle-breakdown {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
